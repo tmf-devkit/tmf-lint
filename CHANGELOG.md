@@ -43,9 +43,10 @@ First public release.
 
 ### Known limitations
 
-- v0.1 covers TMF638, TMF639, TMF641 only. TMF633, TMF634, TMF688 planned for v0.2.
+- v0.1 covers TMF638, TMF639, TMF641 only. TMF633 and TMF634 are planned for v0.2.
 - All POST payloads use minimal spec-compliant fields. Servers that enforce mandatory fields beyond the TMF spec (e.g. `relatedParty`, `resourceSpecification`, custom `@type` subclasses) may cause setup POSTs to fail, which causes dependent rules to skip gracefully. See README for details.
 - No `--fixtures` support yet (v0.2). Point tmf-lint at [tmf-mock](https://github.com/tmf-devkit/tmf-mock) for a clean baseline run.
+- TMF688 event notification validation is not in scope for v0.1 or v0.2 — it requires a separate listener architecture and is planned for v0.3.
 
 ---
 

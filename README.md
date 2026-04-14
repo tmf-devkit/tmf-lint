@@ -207,8 +207,8 @@ ruff check tmf_lint     # lint
 
 | Version | Planned additions |
 |---|---|
-| v0.2 | `--fixtures` for custom POST payloads, TMF688 notification checks |
-| v0.3 | TMF633 Service Catalog, TMF634 Resource Catalog |
+| v0.2 | `--fixtures` for custom POST payloads per implementation, TMF633 Service Catalog, TMF634 Resource Catalog |
+| v0.3 | TMF688 event notification validation (requires separate listener architecture) |
 
 ---
 
