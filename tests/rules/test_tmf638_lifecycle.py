@@ -2,10 +2,9 @@
 from __future__ import annotations
 
 import pytest
-import respx
 import httpx
 
-from tests.conftest import BASE_URL, SERVICE_PATH, service_body
+from tests.helpers import BASE_URL, SERVICE_PATH, service_body
 from tmf_lint.rules.tmf638.r_lifecycle import (
     TMF638ValidTransitionAccepted,
     TMF638TerminalStateRejected,
@@ -13,27 +12,16 @@ from tmf_lint.rules.tmf638.r_lifecycle import (
 )
 
 
-@pytest.fixture(autouse=True)
-def mock_router():
-    with respx.MockRouter(assert_all_called=False) as router:
-        yield router
-
-
-# ── TMF638ValidTransitionAccepted ────────────────────────────────────────────
-
 @pytest.mark.asyncio
 async def test_valid_transition_pass(mock_router, lint_client, ctx_638):
     mock_router.post(SERVICE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=service_body("lc-001"),
+            201, json=service_body("lc-001"),
             headers={"Location": f"{BASE_URL}{SERVICE_PATH}/lc-001"},
         )
     )
     mock_router.patch(f"{SERVICE_PATH}/lc-001").mock(
-        return_value=httpx.Response(
-            200, json={**service_body("lc-001"), "state": "inactive"}
-        )
+        return_value=httpx.Response(200, json={**service_body("lc-001"), "state": "inactive"})
     )
     result = await TMF638ValidTransitionAccepted().check(lint_client, ctx_638)
     assert result.passed
@@ -43,8 +31,7 @@ async def test_valid_transition_pass(mock_router, lint_client, ctx_638):
 async def test_valid_transition_server_rejects(mock_router, lint_client, ctx_638):
     mock_router.post(SERVICE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=service_body("lc-002"),
+            201, json=service_body("lc-002"),
             headers={"Location": f"{BASE_URL}{SERVICE_PATH}/lc-002"},
         )
     )
@@ -55,18 +42,14 @@ async def test_valid_transition_server_rejects(mock_router, lint_client, ctx_638
     assert not result.passed
 
 
-# ── TMF638TerminalStateRejected ──────────────────────────────────────────────
-
 @pytest.mark.asyncio
 async def test_terminal_state_422_pass(mock_router, lint_client, ctx_638):
     mock_router.post(SERVICE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=service_body("lc-003"),
+            201, json=service_body("lc-003"),
             headers={"Location": f"{BASE_URL}{SERVICE_PATH}/lc-003"},
         )
     )
-    # First PATCH → terminated (setup), second → active (should be 422)
     mock_router.patch(f"{SERVICE_PATH}/lc-003").mock(
         side_effect=[
             httpx.Response(200, json={**service_body("lc-003"), "state": "terminated"}),
@@ -81,20 +64,16 @@ async def test_terminal_state_422_pass(mock_router, lint_client, ctx_638):
 async def test_terminal_state_accepted_by_server_fail(mock_router, lint_client, ctx_638):
     mock_router.post(SERVICE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=service_body("lc-004"),
+            201, json=service_body("lc-004"),
             headers={"Location": f"{BASE_URL}{SERVICE_PATH}/lc-004"},
         )
     )
-    # Server incorrectly accepts exit from terminal state
     mock_router.patch(f"{SERVICE_PATH}/lc-004").mock(
         return_value=httpx.Response(200, json=service_body("lc-004"))
     )
     result = await TMF638TerminalStateRejected().check(lint_client, ctx_638)
     assert not result.passed
 
-
-# ── TMF638SameStateAccepted ──────────────────────────────────────────────────
 
 @pytest.mark.asyncio
 async def test_same_state_200_pass(mock_router, lint_client, ctx_638):

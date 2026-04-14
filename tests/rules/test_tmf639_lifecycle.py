@@ -2,10 +2,9 @@
 from __future__ import annotations
 
 import pytest
-import respx
 import httpx
 
-from tests.conftest import BASE_URL, RESOURCE_PATH, resource_body
+from tests.helpers import BASE_URL, RESOURCE_PATH, resource_body
 from tmf_lint.rules.tmf639.r_lifecycle import (
     TMF639ValidTransitionAccepted,
     TMF639InvalidTransitionRejected,
@@ -13,20 +12,11 @@ from tmf_lint.rules.tmf639.r_lifecycle import (
 )
 
 
-@pytest.fixture(autouse=True)
-def mock_router():
-    with respx.MockRouter(assert_all_called=False) as router:
-        yield router
-
-
-# ── TMF639ValidTransitionAccepted ────────────────────────────────────────────
-
 @pytest.mark.asyncio
 async def test_valid_transition_pass(mock_router, lint_client, ctx_639):
     mock_router.post(RESOURCE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=resource_body("lc-001"),
+            201, json=resource_body("lc-001"),
             headers={"Location": f"{BASE_URL}{RESOURCE_PATH}/lc-001"},
         )
     )
@@ -41,8 +31,7 @@ async def test_valid_transition_pass(mock_router, lint_client, ctx_639):
 async def test_valid_transition_rejected_by_server(mock_router, lint_client, ctx_639):
     mock_router.post(RESOURCE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=resource_body("lc-002"),
+            201, json=resource_body("lc-002"),
             headers={"Location": f"{BASE_URL}{RESOURCE_PATH}/lc-002"},
         )
     )
@@ -53,18 +42,14 @@ async def test_valid_transition_rejected_by_server(mock_router, lint_client, ctx
     assert not result.passed
 
 
-# ── TMF639InvalidTransitionRejected ─────────────────────────────────────────
-
 @pytest.mark.asyncio
 async def test_invalid_transition_422_pass(mock_router, lint_client, ctx_639):
     mock_router.post(RESOURCE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=resource_body("lc-003"),
+            201, json=resource_body("lc-003"),
             headers={"Location": f"{BASE_URL}{RESOURCE_PATH}/lc-003"},
         )
     )
-    # First PATCH (→suspended) succeeds, second (→alarm) returns 422.
     mock_router.patch(f"{RESOURCE_PATH}/lc-003").mock(
         side_effect=[
             httpx.Response(200, json={**resource_body("lc-003"), "resourceStatus": "suspended"}),
@@ -79,20 +64,16 @@ async def test_invalid_transition_422_pass(mock_router, lint_client, ctx_639):
 async def test_invalid_transition_accepted_by_server_fail(mock_router, lint_client, ctx_639):
     mock_router.post(RESOURCE_PATH).mock(
         return_value=httpx.Response(
-            201,
-            json=resource_body("lc-004"),
+            201, json=resource_body("lc-004"),
             headers={"Location": f"{BASE_URL}{RESOURCE_PATH}/lc-004"},
         )
     )
-    # Server incorrectly accepts suspended→alarm.
     mock_router.patch(f"{RESOURCE_PATH}/lc-004").mock(
         return_value=httpx.Response(200, json=resource_body("lc-004"))
     )
     result = await TMF639InvalidTransitionRejected().check(lint_client, ctx_639)
     assert not result.passed
 
-
-# ── TMF639SameStateAccepted ──────────────────────────────────────────────────
 
 @pytest.mark.asyncio
 async def test_same_state_200_pass(mock_router, lint_client, ctx_639):

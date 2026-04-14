@@ -5,13 +5,13 @@ import pytest
 import respx
 import httpx
 
-from tests.conftest import BASE_URL, SERVICE_PATH, RESOURCE_PATH, ORDER_PATH
+from tests.helpers import BASE_URL, SERVICE_PATH, RESOURCE_PATH, ORDER_PATH
+from tests.helpers import service_body, resource_body, order_body
 from tmf_lint.runner import run
 
 
 def _stub_all_apis(router: respx.MockRouter) -> None:
     """Mount minimal stub responses for all three APIs so every rule passes."""
-    from tests.conftest import service_body, resource_body, order_body
 
     # ── TMF638 Service ──────────────────────────────────────────────────────
     router.post(SERVICE_PATH).mock(

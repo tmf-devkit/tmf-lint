@@ -2,23 +2,14 @@
 from __future__ import annotations
 
 import pytest
-import respx
 import httpx
 
-from tests.conftest import BASE_URL, SERVICE_PATH, service_body
+from tests.helpers import BASE_URL, SERVICE_PATH, service_body
 from tmf_lint.rules.tmf638.r_mandatory_fields import (
     TMF638PostResponseHasMandatoryFields,
     TMF638GetResponseHasMandatoryFields,
 )
 
-
-@pytest.fixture(autouse=True)
-def mock_router():
-    with respx.MockRouter(assert_all_called=False) as router:
-        yield router
-
-
-# ── TMF638PostResponseHasMandatoryFields ─────────────────────────────────────
 
 @pytest.mark.asyncio
 async def test_post_all_fields_present(mock_router, lint_client, ctx_638):
@@ -69,8 +60,6 @@ async def test_post_non_201_skipped(mock_router, lint_client, ctx_638):
     result = await TMF638PostResponseHasMandatoryFields().check(lint_client, ctx_638)
     assert result.skipped
 
-
-# ── TMF638GetResponseHasMandatoryFields ──────────────────────────────────────
 
 @pytest.mark.asyncio
 async def test_get_all_fields_present(mock_router, lint_client, ctx_638):
