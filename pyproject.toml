@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tmf-lint"
+version = "0.1.0"
+description = "Runtime conformance checker for TMForum Open API implementations — ESLint for TMF APIs"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Manoj Chavan", email = "manoj.chavan23@gmail.com" }]
+keywords = [
+    "tmforum", "telecom", "bss", "oss", "openapi",
+    "tmf638", "tmf639", "tmf641", "conformance", "linting",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Internet :: WWW/HTTP",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.27.0",
+    "click>=8.1.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "respx>=0.21.0",
+    "ruff>=0.4.0",
+]
+
+[project.scripts]
+tmf-lint = "tmf_lint.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/tmf-devkit/tmf-lint"
+Repository = "https://github.com/tmf-devkit/tmf-lint"
+Issues = "https://github.com/tmf-devkit/tmf-lint/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tmf_lint"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
