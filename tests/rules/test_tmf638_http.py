@@ -1,15 +1,15 @@
 """Tests for TMF638 HTTP rules."""
 from __future__ import annotations
 
-import pytest
 import httpx
+import pytest
 
 from tests.helpers import BASE_URL, SERVICE_PATH, service_body
 from tmf_lint.rules.tmf638.r_http import (
-    TMF638PostReturns201,
+    TMF638DeleteReturns204,
     TMF638GetListReturns200,
     TMF638GetUnknownIdReturns404,
-    TMF638DeleteReturns204,
+    TMF638PostReturns201,
 )
 
 

@@ -1,13 +1,13 @@
 """Tests for TMF641 mandatory fields rules."""
 from __future__ import annotations
 
-import pytest
 import httpx
+import pytest
 
 from tests.helpers import BASE_URL, ORDER_PATH, order_body
 from tmf_lint.rules.tmf641.r_mandatory_fields import (
-    TMF641PostResponseHasMandatoryFields,
     TMF641GetResponseHasMandatoryFields,
+    TMF641PostResponseHasMandatoryFields,
 )
 
 

@@ -15,7 +15,7 @@ import uuid
 from tmf_lint.client import LintClient
 from tmf_lint.context import LintContext
 from tmf_lint.result import RuleResult
-from tmf_lint.rules.base import BaseRule, CATEGORY_PAGINATION
+from tmf_lint.rules.base import CATEGORY_PAGINATION, BaseRule
 
 _RESOURCE = "/tmf-api/resourceInventoryManagement/v4/resource"
 _MIN_SEED = 3  # resources we create before testing — ensures a non-empty store

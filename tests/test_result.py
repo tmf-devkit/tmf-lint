@@ -1,6 +1,5 @@
 """Tests for tmf_lint.result — RuleResult and LintReport."""
-import pytest
-from tmf_lint.result import RuleResult, LintReport, Severity
+from tmf_lint.result import LintReport, RuleResult, Severity
 
 
 def _make_result(passed: bool, skipped: bool = False) -> RuleResult:

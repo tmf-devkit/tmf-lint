@@ -1,8 +1,8 @@
 """Tests for TMF639 referential integrity rules."""
 from __future__ import annotations
 
-import pytest
 import httpx
+import pytest
 
 from tests.helpers import BASE_URL, RESOURCE_PATH, SERVICE_PATH, resource_body, service_body
 from tmf_lint.rules.tmf639.r_referential import TMF639DeleteReferencedResourceReturns409

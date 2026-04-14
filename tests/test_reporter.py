@@ -1,14 +1,13 @@
 """Tests for tmf_lint.reporter — human and JSON output formatters."""
 from __future__ import annotations
 
-import json
 import io
+import json
 
-import pytest
 from rich.console import Console
 
-from tmf_lint.result import LintReport, RuleResult
 from tmf_lint.reporter import print_human, print_json
+from tmf_lint.result import LintReport, RuleResult
 
 
 def _make_report(passed: int = 2, failed: int = 1, skipped: int = 0) -> LintReport:

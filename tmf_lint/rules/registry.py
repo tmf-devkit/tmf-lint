@@ -17,7 +17,7 @@ import importlib
 import pkgutil
 from types import ModuleType
 
-from tmf_lint.rules.base import BaseRule, CATEGORY_ORDER
+from tmf_lint.rules.base import CATEGORY_ORDER, BaseRule
 
 # Map API numbers to their sub-package names.
 _API_PACKAGES: dict[int, str] = {

@@ -21,7 +21,7 @@ class LintClient:
             timeout=timeout,
         )
 
-    async def __aenter__(self) -> "LintClient":
+    async def __aenter__(self) -> LintClient:
         return self
 
     async def __aexit__(self, *args: object) -> None:

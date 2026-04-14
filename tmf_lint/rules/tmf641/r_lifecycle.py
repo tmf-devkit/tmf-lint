@@ -26,7 +26,7 @@ import uuid
 from tmf_lint.client import LintClient
 from tmf_lint.context import LintContext
 from tmf_lint.result import RuleResult
-from tmf_lint.rules.base import BaseRule, CATEGORY_LIFECYCLE
+from tmf_lint.rules.base import CATEGORY_LIFECYCLE, BaseRule
 
 _ORDER = "/tmf-api/serviceOrdering/v4/serviceOrder"
 

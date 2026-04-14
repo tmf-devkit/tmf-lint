@@ -1,14 +1,14 @@
 """Tests for TMF638 pagination rules."""
 from __future__ import annotations
 
-import pytest
 import httpx
+import pytest
 
 from tests.helpers import BASE_URL, SERVICE_PATH, service_body
 from tmf_lint.rules.tmf638.r_pagination import (
     TMF638LimitQueryParam,
-    TMF638XTotalCountMatchesActual,
     TMF638OffsetBeyondTotalReturnsEmpty,
+    TMF638XTotalCountMatchesActual,
 )
 
 

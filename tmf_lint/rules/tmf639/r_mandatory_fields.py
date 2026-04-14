@@ -16,7 +16,7 @@ import uuid
 from tmf_lint.client import LintClient
 from tmf_lint.context import LintContext
 from tmf_lint.result import RuleResult
-from tmf_lint.rules.base import BaseRule, CATEGORY_MANDATORY_FIELDS
+from tmf_lint.rules.base import CATEGORY_MANDATORY_FIELDS, BaseRule
 
 _BASE = "/tmf-api/resourceInventoryManagement/v4"
 _RESOURCE = f"{_BASE}/resource"

@@ -11,9 +11,14 @@ import uuid
 from tmf_lint.client import LintClient
 from tmf_lint.context import LintContext
 from tmf_lint.result import RuleResult
-from tmf_lint.rules.base import BaseRule, CATEGORY_MANDATORY_FIELDS
+from tmf_lint.rules.base import CATEGORY_MANDATORY_FIELDS, BaseRule
 
 _ORDER = "/tmf-api/serviceOrdering/v4/serviceOrder"
+
+_MF001_DESC = (
+    "POST /serviceOrder response body contains"
+    " id, href, @type, @baseType, orderDate, state"
+)
 
 
 class TMF641PostResponseHasMandatoryFields(BaseRule):
@@ -22,7 +27,7 @@ class TMF641PostResponseHasMandatoryFields(BaseRule):
     rule_id = "TMF641-MF-001"
     api = 641
     category = CATEGORY_MANDATORY_FIELDS
-    description = "POST /serviceOrder response body contains id, href, @type, @baseType, orderDate, state"
+    description = _MF001_DESC
 
     async def check(self, client: LintClient, ctx: LintContext) -> RuleResult:
         payload = {

@@ -1,6 +1,6 @@
 """Tests for tmf_lint.rules.registry — rule auto-discovery."""
-from tmf_lint.rules.registry import load_rules, list_all_rules
-from tmf_lint.rules.base import BaseRule, CATEGORY_ORDER
+from tmf_lint.rules.base import CATEGORY_ORDER, BaseRule
+from tmf_lint.rules.registry import list_all_rules, load_rules
 
 
 class TestLoadRules:
@@ -30,7 +30,11 @@ class TestLoadRules:
 
     def test_rules_sorted_by_category_order(self):
         rules = load_rules(apis=[638])
-        cat_indices = [CATEGORY_ORDER.index(r.category) for r in rules if r.category in CATEGORY_ORDER]
+        cat_indices = [
+            CATEGORY_ORDER.index(r.category)
+            for r in rules
+            if r.category in CATEGORY_ORDER
+        ]
         assert cat_indices == sorted(cat_indices)
 
     def test_rule_ids_are_unique(self):

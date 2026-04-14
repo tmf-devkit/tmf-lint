@@ -1,8 +1,8 @@
 """Tests for TMF641 referential integrity rules."""
 from __future__ import annotations
 
-import pytest
 import httpx
+import pytest
 
 from tests.helpers import BASE_URL, ORDER_PATH, order_body
 from tmf_lint.rules.tmf641.r_referential import (

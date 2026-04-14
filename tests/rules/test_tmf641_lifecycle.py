@@ -1,14 +1,14 @@
 """Tests for TMF641 lifecycle rules."""
 from __future__ import annotations
 
-import pytest
 import httpx
+import pytest
 
 from tests.helpers import BASE_URL, ORDER_PATH, order_body
 from tmf_lint.rules.tmf641.r_lifecycle import (
-    TMF641ValidTransitionAccepted,
-    TMF641TerminalStateRejected,
     TMF641SameStateAccepted,
+    TMF641TerminalStateRejected,
+    TMF641ValidTransitionAccepted,
 )
 
 

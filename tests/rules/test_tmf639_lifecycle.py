@@ -1,14 +1,14 @@
 """Tests for TMF639 lifecycle rules."""
 from __future__ import annotations
 
-import pytest
 import httpx
+import pytest
 
 from tests.helpers import BASE_URL, RESOURCE_PATH, resource_body
 from tmf_lint.rules.tmf639.r_lifecycle import (
-    TMF639ValidTransitionAccepted,
     TMF639InvalidTransitionRejected,
     TMF639SameStateAccepted,
+    TMF639ValidTransitionAccepted,
 )
 
 
@@ -20,8 +20,9 @@ async def test_valid_transition_pass(mock_router, lint_client, ctx_639):
             headers={"Location": f"{BASE_URL}{RESOURCE_PATH}/lc-001"},
         )
     )
+    suspended_body = {**resource_body("lc-001"), "resourceStatus": "suspended"}
     mock_router.patch(f"{RESOURCE_PATH}/lc-001").mock(
-        return_value=httpx.Response(200, json={**resource_body("lc-001"), "resourceStatus": "suspended"})
+        return_value=httpx.Response(200, json=suspended_body)
     )
     result = await TMF639ValidTransitionAccepted().check(lint_client, ctx_639)
     assert result.passed
@@ -50,9 +51,10 @@ async def test_invalid_transition_422_pass(mock_router, lint_client, ctx_639):
             headers={"Location": f"{BASE_URL}{RESOURCE_PATH}/lc-003"},
         )
     )
+    suspended_body = {**resource_body("lc-003"), "resourceStatus": "suspended"}
     mock_router.patch(f"{RESOURCE_PATH}/lc-003").mock(
         side_effect=[
-            httpx.Response(200, json={**resource_body("lc-003"), "resourceStatus": "suspended"}),
+            httpx.Response(200, json=suspended_body),
             httpx.Response(422, json={"message": "illegal transition"}),
         ]
     )

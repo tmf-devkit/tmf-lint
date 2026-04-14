@@ -167,4 +167,5 @@ def list_rules(apis: str | None) -> None:
         )
 
     console.print(table)
-    console.print(f"\n[dim]{len(all_rules)} rules across {len({r.api for r in all_rules})} API(s)[/dim]\n")
+    n_apis = len({r.api for r in all_rules})
+    console.print(f"\n[dim]{len(all_rules)} rules across {n_apis} API(s)[/dim]\n")
