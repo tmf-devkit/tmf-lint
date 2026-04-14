@@ -15,19 +15,38 @@ Part of the [TMF DevKit](https://github.com/tmf-devkit) open-source toolchain.
 
 ## Quick start
 
-```bash
-pip install tmf-lint
+**Requirements:** Python 3.10 or higher.
 
-# Option A — use tmf-mock as the target (recommended for a clean baseline)
+### Option A — no TMF server? Use tmf-mock (recommended)
+
+[tmf-mock](https://github.com/tmf-devkit/tmf-mock) is a smart TMF API mock server — the easiest way to try tmf-lint without setting up your own implementation.
+
+**Terminal 1 — start the mock server:**
+
+```bash
 pip install tmf-mock
 tmf-mock start --apis 638,639,641
+```
 
-# Option B — point at your own server
-# (read the "Target server requirements" section below first)
+The server starts on `http://localhost:8000` and keeps running. Leave this terminal open.
 
-# Run all conformance checks
+**Terminal 2 — run tmf-lint against it:**
+
+```bash
+pip install tmf-lint
 tmf-lint check --url http://localhost:8000 --apis 638,639,641
 ```
+
+You should see all 39 rules pass with ✅.
+
+### Option B — point at your own server
+
+```bash
+pip install tmf-lint
+tmf-lint check --url http://myserver:8080 --apis 638,639,641
+```
+
+Read the [Target server requirements](#target-server-requirements) section first — tmf-lint creates real data on the server it checks.
 
 ---
 
